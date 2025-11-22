@@ -20,14 +20,14 @@ public record AiFullReport(
 
     // 2. 요약 (ReportResultSummaryRes)
     public record Summary(
-            String summaryDescription, // 마음 날씨 ("구름 낀 해...") -> summary 매핑
-            int dangerScore            // 위험도 (0~100) -> dangerRate 매핑
+            String summary, // 마음 날씨 ("구름 낀 해...") -> summary 매핑
+            int dangerRate            // 위험도 (0~100) -> dangerRate 매핑
     ) {}
 
     // 3. 상세 (DetailAnalysisRes)
     public record DetailComment(
-            String lowestMetricMessage,  // 가장 낮은 지표 멘트 -> lowestMessage 매핑
-            String highestMetricMessage, // 가장 높은 지표 멘트 -> highestMessage 매핑
+            String lowestMessage,  // 가장 낮은 지표 멘트 -> lowestMessage 매핑
+            String highestMessage, // 가장 높은 지표 멘트 -> highestMessage 매핑
             String overallMessage        // 종합 분석 -> overallMessage 매핑
     ) {}
 
@@ -39,6 +39,6 @@ public record AiFullReport(
 
     // 5. 트렌드 (EmotionTrendRes)
     public record TrendComment(
-            String message // 트렌드 분석 문구 ("지난주보다 좋아졌어요")
+            String trendMessage // 트렌드 분석 문구 ("지난주보다 좋아졌어요")
     ) {}
 }

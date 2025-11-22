@@ -38,8 +38,8 @@ public class ReportController {
         AiFullReport.Summary s = dto.getAiData().analysisSummary();
 
         return ResponseEntity.ok(new ReportResultSummaryRes(
-                s.summaryDescription(),                // AI가 쓴 요약
-                s.dangerScore(),             // AI가 계산한 위험도
+                s.summary(),                // AI가 쓴 요약
+                s.dangerRate(),             // AI가 계산한 위험도
                 dto.getTotalAnswerCount()   // DB에 저장된 응답 개수
         ));
     }
@@ -76,8 +76,8 @@ public class ReportController {
         AiFullReport.DetailComment d = dto.getAiData().detailAnalysis();
 
         return ResponseEntity.ok(new DetailAnalysisRes(
-                d.lowestMetricMessage(),
-                d.highestMetricMessage(),
+                d.lowestMessage(),
+                d.highestMessage(),
                 d.overallMessage()
         ));
     }

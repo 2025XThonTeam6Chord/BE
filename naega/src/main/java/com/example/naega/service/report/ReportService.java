@@ -133,13 +133,13 @@ public class ReportService {
                     .reportDate(LocalDateTime.now())
                     .totalAnswerCount(answerCount)
                     // [점수 컬럼 매핑]
-                    .emotionScore(s.emotion())
-                    .stressScore(s.stress())
-                    .resilienceScore(s.resilience())
-                    .socialityScore(s.sociality())
-                    .sleepScore(s.sleep())
-                    .averageScore((s.emotion() + s.stress() + s.resilience() + s.sociality() + s.sleep()) / 5)
-                    // [JSON 컨텐츠 매핑]
+                    .emotionScore((int) s.emotion())
+                    .stressScore((int) s.stress())
+                    .resilienceScore((int) s.resilience())
+                    .socialityScore((int) s.sociality())
+                    .sleepScore((int) s.sleep())
+                    // 평균 계산 시에도 형변환 주의
+                    .averageScore((int) (s.emotion() + s.stress() + s.resilience() + s.sociality() + s.sleep()) / 5)// [JSON 컨텐츠 매핑]
                     .content(contentJson)
                     .build();
 
@@ -182,7 +182,7 @@ public class ReportService {
                 // JSON 파싱해서 멘트 추출
                 AiFullReport fullReport = parseContent(latestReport.getContent());
                 if (fullReport.trendAnalysis() != null) {
-                    trendMessage = fullReport.trendAnalysis().message();
+                    trendMessage = fullReport.trendAnalysis().trendMessage();
                 }
             } catch (Exception e) {
                 // 파싱 에러 시 기본 메시지 유지 (로그 정도만 남김)
