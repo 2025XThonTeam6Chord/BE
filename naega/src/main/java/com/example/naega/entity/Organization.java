@@ -7,37 +7,24 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
-@Table(name = "users")
 @NoArgsConstructor
-public class Users {
+@Table(name = "organiztion")
+public class Organization {
     @Id
-    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "organization_id")
     private Long id;
 
-    @Column(name = "student_number")
-    private Long studentNumber;
-
-    @Column(name = "student_major")
-    private String studentMajor;
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private UserRole userRole;
+    @Column(name = "orga_type", nullable = false)
+    private OrgaEnum orgaEnum;
 
-    @OneToMany(mappedBy = "users")
-    private List<Answers> answers = new ArrayList<>();
+    @Column(name = "name")
+    private String name;
 }

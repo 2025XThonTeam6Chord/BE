@@ -2,34 +2,35 @@ package com.example.naega.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "answers")
+@Table(name = "counseling_center")
 @NoArgsConstructor
-public class Answers {
+public class CounselingCenter {
     @Id
-    @Column(name = "answer_id")
+    @Column(name = "counseling_center_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Users users;
+    @OneToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id")
-    private Question question;
+    @Column(name = "center_name")
+    private String centerName;
 
-    @Column(name = "result")
-    private String result;
+    @Column(name = "center_ph")
+    private String centerPh;
+
+    @Column(name = "center_address")
+    private String centerAddress;
 }
