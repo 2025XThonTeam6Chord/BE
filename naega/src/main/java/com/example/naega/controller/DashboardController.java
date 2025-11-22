@@ -67,7 +67,7 @@ public class DashboardController {
     public ResponseEntity<FilteredGroupScoreRes> getDashboardGroupScoreByFilter(
             @RequestParam(name = "filter") Integer filter
     ) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(dashboardService.getDashboardGroupScore(filter));
     }
 
     @Operation(

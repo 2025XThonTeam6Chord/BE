@@ -2,7 +2,9 @@ package com.example.naega.service.dashboard;
 
 
 import com.example.naega.dto.dashboard.AverageScoreRes;
+import com.example.naega.dto.dashboard.FilteredGroupScoreRes;
 import com.example.naega.entity.Report;
+import com.example.naega.repository.dashboard.DashboardGroupProjection;
 import com.example.naega.repository.dashboard.DashboardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -59,5 +62,38 @@ public class DashboardService {
         return AverageScoreRes.builder()
                 .averageScores(scoreList)
                 .build();
+    }
+
+    public FilteredGroupScoreRes getDashboardGroupScore(int filter){
+        List<DashboardGroupProjection> stats;
+        if (filter == 0){
+            stats=dashboardRepository.findByUnivWithStressAvg();
+        } else if (filter == 1){
+            stats=dashboardRepository.findByMajorWithStressAvg();
+        } else {
+            stats=dashboardRepository.findByYearWithStressAvg();
+        }
+
+        List<FilteredGroupScoreRes.FilteredGroup> groupList = stats.stream()
+                .map(stat -> {
+                    String label = "";
+                    if (filter == 0) {
+                        label = stat.getStudentUniv();
+                    } else if (filter == 1) {
+                        label = stat.getStudentMajor();
+                    } else {
+                        label = stat.getStudentYear() + "학년";
+                    }
+
+                    double avg = stat.getAvgScore() != null ? stat.getAvgScore() : 0.0;
+                    String scoreStr = String.format("%.1f", avg);
+
+                    int count = stat.getCount() != null ? stat.getCount().intValue() : 0;
+
+                    return new FilteredGroupScoreRes.FilteredGroup(label, scoreStr, count);
+                })
+                .collect(Collectors.toList());
+
+        return new FilteredGroupScoreRes(groupList);
     }
 }

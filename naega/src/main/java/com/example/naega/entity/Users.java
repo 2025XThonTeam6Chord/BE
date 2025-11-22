@@ -40,6 +40,9 @@ public class Users {
     @Column(name = "student_univ")
     private String studentUniv;
 
+    @Column(name = "student_year")
+    private Integer studentYear;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRole userRole;
