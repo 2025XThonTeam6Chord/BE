@@ -8,8 +8,8 @@ import com.example.naega.entity.Answers;
 import com.example.naega.entity.Report;
 import com.example.naega.entity.Users;
 import com.example.naega.repository.ReportRepository;
-import com.example.naega.repository.UserRepository;
 import com.example.naega.repository.answer.AnswerRepository;
+import com.example.naega.repository.answer.UsersRepository;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import jakarta.annotation.PostConstruct;
@@ -21,7 +21,6 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
@@ -36,7 +35,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReportService {
     private final ReportRepository reportRepository;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
     private final AnswerRepository answerRepository;
     private final ChatLanguageModel chatModel; // 설정파일에서 주입됨
     private final ObjectMapper objectMapper;   // JSON 변환기
@@ -126,7 +125,7 @@ public class ReportService {
 
         try {
             String contentJson = objectMapper.writeValueAsString(aiResult);
-            Users user = userRepository.findById(userId).orElseThrow();
+            Users user = usersRepository.findById(userId).orElseThrow();
 
             // 3. 엔티티 생성 (점수는 컬럼에, 나머지는 content에)
             Report newReport = Report.builder()
