@@ -30,10 +30,11 @@ public class QuestionsController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
     @PostMapping
-    public ResponseEntity<Void> answer(
+    public ResponseEntity<Boolean> answer(
             @RequestBody UserAnswerReq userAnswerReq
             ) {
-        return ResponseEntity.ok().build();
+        answerService.saveAnswer(userAnswerReq);
+        return ResponseEntity.ok(true);
     }
 
     @Operation(
