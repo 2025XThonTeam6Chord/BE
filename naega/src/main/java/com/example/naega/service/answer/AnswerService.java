@@ -30,7 +30,6 @@ public class AnswerService {
         Users users = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 질문이 존재하지 않습니다. id=" + userId));
 
-
         Answers answers = Answers.builder()
                 .users(users)
                 .question(question)
@@ -48,6 +47,11 @@ public class AnswerService {
                 .questionId(question.getId())
                 .responseType(question.getResponseType())
                 .content(question.getContents())
+                .question1(question.getQuestion1())
+                .question2(question.getQuestion2())
+                .question3(question.getQuestion3())
+                .question4(question.getQuestion4())
+                .question5(question.getQuestion5())
                 .build();
     }
 }
