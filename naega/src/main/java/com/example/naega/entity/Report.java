@@ -54,5 +54,4 @@ public class Report {
 
     @Column(name = "total_answer_count")
     private Long totalAnswerCount;
-
 }
