@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: naega
+
+  datasource:
+    url: ${DATASOURCE_URL}       # 환경변수로 교체
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PW}   # 환경변수로 교체
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: ${OPENAI_API_KEY}  # 환경변수로 교체
+      model-name: gpt-4o-mini
+      temperature: 0.0
+      log-requests: true
+      log-responses: true
