@@ -34,6 +34,19 @@ public class Users {
     @Column(name = "student_major")
     private String studentMajor;
 
+    @Column(name = "student_name")
+    private String studentName;
+
+    @Column(name = "student_univ")
+    private String studentUniv;
+
+    @Column(name = "student_year")
+    private Integer studentYear;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "student_risk")
+    private Risk studentRisk;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRole userRole;
