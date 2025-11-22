@@ -4,10 +4,12 @@ import com.example.naega.ai.PsychAnalysisAgent;
 import com.example.naega.dto.report.AiFullReport;
 import com.example.naega.dto.report.EmotionTrendRes;
 import com.example.naega.dto.report.ReportAnalysisDto;
+import com.example.naega.entity.Answers;
 import com.example.naega.entity.Report;
 import com.example.naega.entity.Users;
 import com.example.naega.repository.ReportRepository;
-import com.example.naega.repository.UserRepository;
+import com.example.naega.repository.answer.AnswerRepository;
+import com.example.naega.repository.answer.UsersRepository;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import jakarta.annotation.PostConstruct;
@@ -19,7 +21,6 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
@@ -28,12 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ReportService {
     private final ReportRepository reportRepository;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
+    private final AnswerRepository answerRepository;
     private final ChatLanguageModel chatModel; // 설정파일에서 주입됨
     private final ObjectMapper objectMapper;   // JSON 변환기
 
@@ -94,17 +97,35 @@ public class ReportService {
     }
 
     private Report generateNewReport(Long userId) {
-        // TODO: 실제 답변 데이터를 가져오는 로직 필요 (임시 데이터 사용)
-        String mockUserAnswers = "사용자 답변 데이터...";
-        long answerCount = 15L; // 실제 답변 개수 조회 필요
+        // 1. [수정] DB에서 실제 사용자 답변 가져오기
+        List<Answers> userAnswers = answerRepository.findAllByUserId(userId);
+
+        // 답변 개수 (리포트 메타데이터용)
+        long answerCount = userAnswers.size();
+
+        // 2. [수정] AI에게 보낼 프롬프트 문자열 생성
+        // 포맷 예시:
+        // Q: 잠은 잘 잤나요? (RATING_5) -> A: 1
+        // Q: 미래는... (SHORT_TEXT) -> A: 암담하다
+        String formattedAnswers = userAnswers.stream()
+                .map(a -> String.format("Q: %s (%s)\nA: %s",
+                        a.getQuestion().getContents(),     // 질문 내용
+                        a.getQuestion().getResponseType(), // 질문 타입 (객관식/주관식)
+                        a.getResult()))                    // 사용자가 입력한 답
+                .collect(Collectors.joining("\n\n"));      // 문항 사이 줄바꿈
+
+        // (데이터가 아예 없으면 예외 처리 혹은 빈 리포트 처리)
+        if (userAnswers.isEmpty()) {
+            throw new RuntimeException("분석할 답변 데이터가 없습니다. 먼저 검사를 진행해주세요.");
+        }
 
         // 1. AI 분석 수행
-        AiFullReport aiResult = aiAgent.analyze(mockUserAnswers, schoolDataCache);
+        AiFullReport aiResult = aiAgent.analyze(formattedAnswers, schoolDataCache);
         AiFullReport.PsychScores s = aiResult.scores();
 
         try {
             String contentJson = objectMapper.writeValueAsString(aiResult);
-            Users user = userRepository.findById(userId).orElseThrow();
+            Users user = usersRepository.findById(userId).orElseThrow();
 
             // 3. 엔티티 생성 (점수는 컬럼에, 나머지는 content에)
             Report newReport = Report.builder()
