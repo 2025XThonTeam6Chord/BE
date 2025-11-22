@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AnswerRepository extends JpaRepository<Answers,Long> {
+    long countByUsersId(Long userId);
     @Query("SELECT a FROM Answers a JOIN FETCH a.question WHERE a.users.id = :userId")
     List<Answers> findAllByUserId(@Param("userId") Long userId);
 }
