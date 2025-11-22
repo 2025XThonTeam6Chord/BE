@@ -1,5 +1,6 @@
 package com.example.naega.service.answer;
 
+import com.example.naega.common.GlobalHeaderInterceptor;
 import com.example.naega.dto.answer.UserAnswerReq;
 import com.example.naega.dto.answer.UserAnswerRes;
 import com.example.naega.entity.Answers;
@@ -24,6 +25,7 @@ public class AnswerService {
         Long questionId = userAnswerReq.questionId();
         Long userId = userAnswerReq.userId();
         String result = userAnswerReq.answer();
+        Long count = answersRepository.countByUsersId(userId);
 
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 질문이 존재하지 않습니다. id=" + questionId));
@@ -34,6 +36,7 @@ public class AnswerService {
                 .users(users)
                 .question(question)
                 .result(result)
+                .count(count+1)
                 .build();
 
         answersRepository.save(answers);
@@ -42,6 +45,9 @@ public class AnswerService {
     public UserAnswerRes getQuestion() {
         Question question = questionRepository.findRandomQuestion()
                 .orElseThrow(() -> new IllegalArgumentException(("질문이 한개도 존재하지 않습니다.")));
+        String userId = GlobalHeaderInterceptor.localThread.get();
+        Long count = answersRepository.countByUsersId(Long.parseLong(userId));
+
 
         return UserAnswerRes.builder()
                 .questionId(question.getId())
@@ -52,6 +58,7 @@ public class AnswerService {
                 .question3(question.getQuestion3())
                 .question4(question.getQuestion4())
                 .question5(question.getQuestion5())
+                .count(count)
                 .build();
     }
 }
