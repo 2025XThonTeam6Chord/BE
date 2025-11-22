@@ -22,6 +22,7 @@ public record CounselingRequestListRes(
             @Schema(description = "단과대", example = "공과대학")
             String univ,
             @Schema(description = "과", example = "컴퓨터공학과")
-            String major
+            String major,
+            String risk
     ) {}
 }

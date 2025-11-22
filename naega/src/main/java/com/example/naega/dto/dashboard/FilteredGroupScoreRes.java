@@ -12,12 +12,15 @@ public record FilteredGroupScoreRes(
                 arraySchema = @Schema(implementation = FilteredGroup[].class)
         )
         List<FilteredGroup> filteredGroups
+
 ) {
     @Schema(description = "집단 DTO")
     public record FilteredGroup(
-            @Schema(description = "X축(집단)", example = "공과대학/컴퓨터공학과/1학년 등")
-            String groupX,
-            @Schema(description = "Y축(점수)", example = "58")
-            String scoreY
+            @Schema(description = "Y축(집단)", example = "공과대학/컴퓨터공학과/1학년 등")
+            String groupY,
+            @Schema(description = "X축(점수)", example = "58")
+            String scoreX,
+            @Schema(description = "인원", example = "158")
+            Integer count
     ){}
 }
