@@ -2,6 +2,8 @@ package com.example.naega.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,8 +24,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Users {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "student_number")
@@ -32,6 +34,10 @@ public class Users {
     @Column(name = "student_major")
     private String studentMajor;
 
-    @OneToMany(mappedBy = "user")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole userRole;
+
+    @OneToMany(mappedBy = "users")
     private List<Answers> answers = new ArrayList<>();
 }
