@@ -3,7 +3,7 @@ package com.example.naega.controller;
 import com.example.naega.common.GlobalHeaderInterceptor;
 import com.example.naega.dto.report.*;
 import com.example.naega.entity.Report;
-import com.example.naega.service.user.ReportService;
+import com.example.naega.service.report.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

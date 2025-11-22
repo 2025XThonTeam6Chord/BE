@@ -32,7 +32,7 @@ public class Report {
     @JoinColumn(name = "user_id")
     private Users users;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "LONGTEXT")
     private String content;
 
     @Column(name = "report_date")
