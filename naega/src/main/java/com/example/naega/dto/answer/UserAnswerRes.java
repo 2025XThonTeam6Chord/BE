@@ -24,6 +24,8 @@ public record UserAnswerRes(
         @JsonInclude(JsonInclude.Include.NON_NULL)
         String question4,
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        String question5
+        String question5,
+
+        Long count
 ) {
 }
