@@ -4,8 +4,8 @@ import com.example.naega.dto.dashboard.AverageScoreRes;
 import com.example.naega.dto.dashboard.CounselingRequestListRes;
 import com.example.naega.dto.dashboard.FilteredGroupScoreRes;
 import com.example.naega.dto.dashboard.TotalSummaryRes;
-import com.example.naega.repository.dashboard.DashboardRepository;
 import com.example.naega.service.dashboard.DashboardService;
+import com.example.naega.service.user.CounselingRequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/dashboard")
 @RequiredArgsConstructor
+@RequestMapping("/dashboard")
 @Tag(name="대시보드", description = "관리자 대시보드에 사용되는 API 모음")
 public class DashboardController {
 
     private final DashboardService dashboardService;
+    private final CounselingRequestService counselingRequestService;
 
     @Operation(
             summary = "전체 정신건강 지표 요약",
@@ -80,6 +81,6 @@ public class DashboardController {
     })
     @GetMapping("/reserve-list")
     public ResponseEntity<CounselingRequestListRes> getDashboardCounselingReserveList() {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(counselingRequestService.getDashboardCounselingReserveList());
     }
 }
