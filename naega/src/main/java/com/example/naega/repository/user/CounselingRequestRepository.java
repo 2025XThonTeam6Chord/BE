@@ -13,7 +13,8 @@ public interface CounselingRequestRepository extends JpaRepository<CounselingReq
                cr.users.studentNumber AS studentNumber,
                cr.users.studentMajor AS studentMajor,
                cr.users.studentUniv AS studentUniv,
-               r.averageScore AS averageScore
+               r.averageScore AS averageScore,
+               u.studentRisk AS studentRisk
         FROM CounselingRequest cr
         JOIN cr.users u
         LEFT JOIN Report r ON r.users = u AND r.reportDate = cr.reserveDate

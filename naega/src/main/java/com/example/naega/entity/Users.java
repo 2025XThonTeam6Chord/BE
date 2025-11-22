@@ -44,6 +44,10 @@ public class Users {
     private Integer studentYear;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "student_risk")
+    private Risk studentRisk;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRole userRole;
 
