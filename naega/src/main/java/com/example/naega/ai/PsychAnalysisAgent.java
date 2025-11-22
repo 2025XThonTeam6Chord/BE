@@ -7,7 +7,7 @@ import dev.langchain4j.service.V;
 
 public interface PsychAnalysisAgent {
     @SystemMessage("""
-        당신은 대학교 심리 상담 전문가입니다. 
+        당신은 대학교 심리 상담 전문가입니다.
         사용자의 [답변 데이터]를 분석하여 JSON 리포트를 작성하세요.
         
         [참고: 교내 프로그램]
